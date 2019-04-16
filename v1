@@ -52,7 +52,18 @@ Plan: Move the filemarker to the given location or offset, then read 4 character
 """ Description: This method will take two files and copy the header of the first file onto the second file
 
 Parameters: bin_file:the bmp file which was given by the user opened for reading
-output_file: duplicate bmp file opened for writing Return: output_file:duplicate bmp file opened for writing(now has the header of bin_file) Plan: Use previous method to calculate the marker location of the header from the input or original file, then read the characters in the header of the original file and copy them onto the output file, and return it """ def copy_header(bin_file,output_file): header_end=get_integer(bin_file,10) bin_file.seek(0) header=bin_file.read(header_end) output_file.write(header) return output_file
+output_file: duplicate bmp file opened for writing 
+
+Return: output_file:duplicate bmp file opened for writing(now has the header of bin_file) 
+
+Plan: Use previous method to calculate the marker location of the header from the input or original file, then read the characters in the header of the original file and copy them onto the output file, and return it
+""" 
+def copy_header(bin_file,output_file): 
+ header_end=get_integer(bin_file,10) 
+ bin_file.seek(0) 
+ header=bin_file.read(header_end) 
+ output_file.write(header) 
+ return output_file
 
 """ Description: This method will copy the bmp file given by the user, into a duplicate file
 
@@ -60,6 +71,15 @@ Parameters: bin_file: the bmp file which was given by the user
 
 Return: NONE
 
-Plan: A duplicate file will be opened called "Copy.bmp", it will be opened to write on. Then each character from the original file will be copied into the duplicate file. """ def copy_file (bin_file): copy_bin=open("Copy.bmp","wb") bin_file.seek(0) for ch in bin_file: copy_bin.write(ch) bin_file.close() copy_bin.close() return copy_bin
+Plan: A duplicate file will be opened called "Copy.bmp", it will be opened to write on. Then each character from the original file will be copied into the duplicate file. 
+""" 
+def copy_file (bin_file): 
+copy_bin=open("Copy.bmp","wb") 
+bin_file.seek(0) 
+for ch in bin_file: 
+ copy_bin.write(ch) 
+ bin_file.close() 
+ copy_bin.close() 
+return copy_bin
 
 if name == "main": main()
