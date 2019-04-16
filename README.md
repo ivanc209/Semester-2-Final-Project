@@ -8,9 +8,13 @@ ASSIGNMENT Sem 2 Final Project
 
 This program will create a tile game using an inputted image
 """
+
+
 import os
 def main():
     draw_image()
+    
+    
 
 """
 Description: This method will take in a file and create a copy with a 4x4 grid
