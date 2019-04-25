@@ -55,13 +55,15 @@ def draw_image():
             for j in range(width-1):
                 #print j,column_coord
                 bin_list[row_coord][j]=bytearray("000")
-        tile_swap(1,2,bin_list,ROW,COLUMN)        
+        #call method to swap 2 desired tiles        
+        tile_swap(1,2,bin_list,ROW,COLUMN)
+        
         #copy onto output file        
         for row in bin_list:
             for num in row:
                 copy_binfile.write(num)
         
-        #copy_binfile.close()    
+        
     os.system("powershell -c H:\CS2\Final Project\Semester-2-Final-Project\grid_picc.bmp")
 
 
@@ -72,9 +74,9 @@ def tile_swap(tile1,tile2,grid_pic,ROW,COLUMN):
         for j in range(0,COLUMN):
             
             byte_row1=grid_pic[i][j]
-            byte_row2=grid_pic[row_coord2][j]
-            grid_pic[i][j]=grid_pic[row_coord2][j]
-            grid_pic[row_coord2][j]=byte_row1
+            byte_row2=grid_pic[i][column_coord2]
+            grid_pic[i][j]=grid_pic[i][column_coord2]
+            grid_pic[i][column_coord2]=byte_row1
 """ 
 Description:
 This method will calculate the binary integer represented at the offset inputted
