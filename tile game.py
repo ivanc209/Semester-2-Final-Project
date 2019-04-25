@@ -7,14 +7,14 @@ ASSIGNMENT Sem 2 Final Project
 This program will create a tile game using an inputted image
 """
 import os
-
+import random
 
 def main():
     draw_image()
 
 
 def draw_image():
-    #os.system("powershell -c H:\CS2\Unit5\class.bmp")
+    #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\class.bmp")
     bin_list=[]
 
     bin_file=open("class.bmp","rb") 
@@ -56,7 +56,7 @@ def draw_image():
                 #print j,column_coord
                 bin_list[row_coord][j]=bytearray("000")
         #call method to swap 2 desired tiles        
-        tile_swap(1,2,bin_list,ROW,COLUMN)
+        tile_swap(5,12,bin_list,ROW,COLUMN)
         
         #copy onto output file        
         for row in bin_list:
@@ -64,19 +64,27 @@ def draw_image():
                 copy_binfile.write(num)
         
         
-    os.system("powershell -c H:\CS2\Final Project\Semester-2-Final-Project\grid_picc.bmp")
+    os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
 
 
 def tile_swap(tile1,tile2,grid_pic,ROW,COLUMN):
-    row_coord2=ROW*(tile1)
-    column_coord2=COLUMN*(tile1)
+    row_coord1=((tile1-1)/4)*ROW
+    column_coord1=(tile1-1)/4*COLUMN
+    
+    row_coord2=((tile2-1)/4)*ROW
+    column_coord2=(tile2-1)/4*COLUMN
+    print row_coord1,column_coord1,row_coord2,column_coord2,ROW,COLUMN
     for i in range(0,ROW):
         for j in range(0,COLUMN):
+            #print i,j
+            byte_row1=grid_pic[i+row_coord1][j+row_coord1]
+            byte_row2=grid_pic[i+row_coord2][j+column_coord2]
             
-            byte_row1=grid_pic[i][j]
-            byte_row2=grid_pic[i][column_coord2]
-            grid_pic[i][j]=grid_pic[i][column_coord2]
-            grid_pic[i][column_coord2]=byte_row1
+            grid_pic[i+row_coord1][j+row_coord1]=byte_row2
+            grid_pic[i+row_coord2][j+column_coord2]=byte_row1
+
+def scramble(bin_list):
+    print
 """ 
 Description:
 This method will calculate the binary integer represented at the offset inputted
