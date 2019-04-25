@@ -7,48 +7,74 @@ ASSIGNMENT Sem 2 Final Project
 This program will create a tile game using an inputted image
 """
 import os
+
+
 def main():
     draw_image()
 
 
 def draw_image():
-    os.system("powershell -c H:\CS2\Unit5\class.bmp")
+    #os.system("powershell -c H:\CS2\Unit5\class.bmp")
     bin_list=[]
 
-    with open("class.bmp","rb") as bin_file:
-        header_offset=get_integer(bin_file,10)
-        width=get_integer(bin_file,18)
-        height=get_integer(bin_file,22)
-        image_data=width*3*height
-        # print width,height,image_data
-        bin_file.seek(header_offset)
+    bin_file=open("class.bmp","rb") 
+    header_offset=get_integer(bin_file,10)
+    width=get_integer(bin_file,18)
+    height=get_integer(bin_file,22)
+    image_data=width*3*height
+    # print width,height,image_data
+    bin_file.seek(header_offset)
         
-        #append the image data into a 2D list
-        for i in range(height*width):
-            row=[]
+    #append the image data into a 2D list
+    for i in range(height):
+        row=[]
+        for i in range(width):
             pixel=bin_file.read(3)
             row.append(pixel)
-            bin_list.append(row)
+        bin_list.append(row)
             
-        #create copy of orignial file to have grid lines made
-        copy_binfile=open("grid_pic","wb")
+    #create copy of orignial file to have grid lines made
+    with open("grid_picc.bmp","wb") as copy_binfile:
         copy_header(bin_file,copy_binfile)
-        
-        #create four grids 
-        for i in range(1,5):
-            column=width/4
-            column_coord=column*i
-            print column_coord
-            for j in range(1):
-                #print j
-                #byte=bin_list[column_coord][j]
-                #num=ord(byte)
-                new_num=0
-                new_char=chr(new_num)
-                bin_list[j][column_coord]=new_char
-    #os.system("powershell -c H:\CS2\Unit5\grid_pic.bmp")
-    
 
+        COLUMN=width/4
+        ROW=height/4
+
+        #create four columns 
+        for i in range(1,4):    
+            column_coord=COLUMN*i
+            #print column_coord
+            
+            for j in range(height-1):
+                #print j,column_coord
+                bin_list[j][column_coord]=bytearray("000")
+
+        #create four rows 
+        for i in range(1,4):    
+            row_coord=ROW*i
+            for j in range(width-1):
+                #print j,column_coord
+                bin_list[row_coord][j]=bytearray("000")
+        tile_swap(1,2,bin_list,ROW,COLUMN)        
+        #copy onto output file        
+        for row in bin_list:
+            for num in row:
+                copy_binfile.write(num)
+        
+        #copy_binfile.close()    
+    os.system("powershell -c H:\CS2\Final Project\Semester-2-Final-Project\grid_picc.bmp")
+
+
+def tile_swap(tile1,tile2,grid_pic,ROW,COLUMN):
+    row_coord2=ROW*(tile1)
+    column_coord2=COLUMN*(tile1)
+    for i in range(0,ROW):
+        for j in range(0,COLUMN):
+            
+            byte_row1=grid_pic[i][j]
+            byte_row2=grid_pic[row_coord2][j]
+            grid_pic[i][j]=grid_pic[row_coord2][j]
+            grid_pic[row_coord2][j]=byte_row1
 """ 
 Description:
 This method will calculate the binary integer represented at the offset inputted
@@ -97,7 +123,7 @@ def copy_header(bin_file,output_file):
     bin_file.seek(0)
     header=bin_file.read(header_end)
     output_file.write(header)
-    return output_file
+
 
 """
 Description: This method will copy the bmp file given by the user,
