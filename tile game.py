@@ -66,15 +66,17 @@ def draw_image():
                 #print j,column_coord
                 bin_list[row_coord][j]=bytearray("000")
         #call method to swap 2 desired tiles        
-        #scramble(bin_list,ROW,COLUMN)
-        tile_swap(15,16,bin_list,ROW,COLUMN)
+        scramble(bin_list,ROW,COLUMN)
+        #tile_swap(15,16,bin_list,ROW,COLUMN)
         #copy new 2D list onto output file        
         for row in bin_list:
             for num in row:
                 copy_binfile.write(num)
+        os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+        for i in range(10):
+            user(bin_list,ROW,COLUMN,copy_binfile)
         
-        
-    os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+    
 
 """
 Description: This method will take two tiles on the image and swap the two tiles.
@@ -116,6 +118,16 @@ def scramble(bin_list,ROW,COLUMN):
         random2=random.randint(1,16)
         print random1, random2
         tile_swap(random1,random2,bin_list,ROW,COLUMN)
+        
+def user(bin_list,ROW,COLUMN,copy_binfile):
+    tile1= input("Please enter the first tile: ")
+    tile2= input("Second tile: ")
+    tile_swap(tile1,tile2,bin_list,ROW,COLUMN)
+    for row in bin_list:
+        for num in row:
+            copy_binfile.write(num)
+    os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+
 """ 
 Description:
 This method will calculate the binary integer represented at the offset inputted
