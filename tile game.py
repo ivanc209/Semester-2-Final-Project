@@ -66,8 +66,8 @@ def draw_image():
                 #print j,column_coord
                 bin_list[row_coord][j]=bytearray("000")
         #call method to swap 2 desired tiles        
-        scramble(bin_list,ROW,COLUMN)
-        
+        #scramble(bin_list,ROW,COLUMN)
+        tile_swap(15,16,bin_list,ROW,COLUMN)
         #copy new 2D list onto output file        
         for row in bin_list:
             for num in row:
@@ -100,7 +100,7 @@ def tile_swap(tile1,tile2,grid_pic,ROW,COLUMN):
         column_coord2=(tile2-2)/4*COLUMN
     else:
         column_coord2=(tile2-1)*COLUMN
-    print row_coord1,column_coord1,row_coord2,column_coord2
+    #print row_coord1,column_coord1,row_coord2,column_coord2
     for i in range(0,ROW):
         for j in range(0,COLUMN):
             #print i +row_coord1,j+row_coord1
@@ -111,9 +111,10 @@ def tile_swap(tile1,tile2,grid_pic,ROW,COLUMN):
             grid_pic[i+row_coord2][j+column_coord2]=byte_row1
 
 def scramble(bin_list,ROW,COLUMN):
-    for i in range(10):
+    for i in range(20):
         random1=random.randint(1,16)
         random2=random.randint(1,16)
+        print random1, random2
         tile_swap(random1,random2,bin_list,ROW,COLUMN)
 """ 
 Description:
