@@ -1,27 +1,37 @@
 """
 Ivan C
 CS 2
-4/2/19
+4/24/19
 ASSIGNMENT Sem 2 Final Project
 
 This program will create a tile game using an inputted image
 """
 import os
-import random
+
 
 def main():
     draw_image()
 
-
+"""
+Description:This method will take an image, create a 2D list of its contents, and make a grid
+ontop of the image
+Parameters:
+    NONE
+Return:
+    NONE
+Plan:The bmp image will first be opened, and each pixel will be added into a 2D list
+containing each row and column. Then the image will be opened, and using the 2D list, the
+method will create a 4x4 grid on top of the image by turning pixels black at equal distances
+"""
 def draw_image():
-    #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\class.bmp")
+    #os.system("powershell -c H:\CS2\Unit5\class.bmp")
     bin_list=[]
 
     bin_file=open("class.bmp","rb") 
     header_offset=get_integer(bin_file,10)
     width=get_integer(bin_file,18)
     height=get_integer(bin_file,22)
-    image_data=width*3*height
+    #image_data=width*3*height
     # print width,height,image_data
     bin_file.seek(header_offset)
         
@@ -56,35 +66,48 @@ def draw_image():
                 #print j,column_coord
                 bin_list[row_coord][j]=bytearray("000")
         #call method to swap 2 desired tiles        
-        tile_swap(5,12,bin_list,ROW,COLUMN)
+        tile_swap(1,2,bin_list,ROW,COLUMN)
         
-        #copy onto output file        
+        #copy new 2D list onto output file        
         for row in bin_list:
             for num in row:
                 copy_binfile.write(num)
         
         
-    os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+    os.system("powershell -c H:\CS2\Final Project\Semester-2-Final-Project\grid_picc.bmp")
 
-
+"""
+Description: This method will take two tiles on the image and swap the two tiles.
+Parameters:
+    tile1:the coordinate of the first desired tile
+    tile2: the coordinate of the second desired tile
+    grid_pic: the 2D list containing the image data
+    ROW: the height of 1 box within the grid
+    COLUMN: the width of 1 box within the grid
+Return:
+    NONE
+Plan: The method will go through each individual row within the two boxes passed as parameters
+swapping that row for the row of the second box. 
+"""
 def tile_swap(tile1,tile2,grid_pic,ROW,COLUMN):
     row_coord1=((tile1-1)/4)*ROW
-    column_coord1=(tile1-1)/4*COLUMN
-    
+    if tile1>4:
+        column_coord1=(tile1-2)/4*COLUMN
+    else:
+        column_coord1=(tile1-1)*COLUMN
     row_coord2=((tile2-1)/4)*ROW
-    column_coord2=(tile2-1)/4*COLUMN
-    print row_coord1,column_coord1,row_coord2,column_coord2,ROW,COLUMN
+    if tile2>4:
+        column_coord2=(tile2-2)/4*COLUMN
+    else:
+        column_coord2=(tile2-1)*COLUMN
+    print row_coord1,column_coord1,row_coord2,column_coord2
     for i in range(0,ROW):
         for j in range(0,COLUMN):
-            #print i,j
             byte_row1=grid_pic[i+row_coord1][j+row_coord1]
             byte_row2=grid_pic[i+row_coord2][j+column_coord2]
             
             grid_pic[i+row_coord1][j+row_coord1]=byte_row2
             grid_pic[i+row_coord2][j+column_coord2]=byte_row1
-
-def scramble(bin_list):
-    print
 """ 
 Description:
 This method will calculate the binary integer represented at the offset inputted
