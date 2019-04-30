@@ -24,7 +24,7 @@ containing each row and column. Then the image will be opened, and using the 2D 
 method will create a 4x4 grid on top of the image by turning pixels black at equal distances
 """
 def draw_image():
-    #os.system("powershell -c H:\CS2\Unit5\class.bmp")
+    os.system("powershell -c H:\CS2\Unit5\class.bmp")
     bin_list=[]
 
     bin_file=open("class.bmp","rb") 
@@ -199,3 +199,4 @@ def copy_file (bin_file):
     return copy_bin    
 if __name__ == "__main__":
     main()
+
