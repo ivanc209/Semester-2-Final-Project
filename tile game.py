@@ -24,15 +24,12 @@ containing each row and column. Then the image will be opened, and using the 2D 
 method will create a 4x4 grid on top of the image by turning pixels black at equal distances
 """
 def draw_image():
-    #os.system("powershell -c H:\CS2\Unit5\class.bmp")
+    os.system("powershell -c H:\CS2\Unit5\class.bmp")
     bin_list=[]
-
     bin_file=open("class.bmp","rb") 
     header_offset=get_integer(bin_file,10)
     width=get_integer(bin_file,18)
     height=get_integer(bin_file,22)
-    #image_data=width*3*height
-    # print width,height,image_data
     bin_file.seek(header_offset)
         
     #append the image data into a 2D list
@@ -53,28 +50,26 @@ def draw_image():
         #create four columns 
         for i in range(1,4):    
             column_coord=COLUMN*i
-            #print column_coord
-            
             for j in range(height-1):
-                #print j,column_coord
                 bin_list[j][column_coord]=bytearray("000")
 
         #create four rows 
         for i in range(1,4):    
             row_coord=ROW*i
             for j in range(width-1):
-                #print j,column_coord
                 bin_list[row_coord][j]=bytearray("000")
-        #call method to swap 2 desired tiles        
-        #scramble(bin_list,ROW,COLUMN)
-        tile_swap(1,2,bin_list,ROW,COLUMN)
-        #copy new 2D list onto output file        
-        for row in bin_list:
-            for num in row:
-                copy_binfile.write(num)
-        os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
-        #for i in range(10):
-         #   user(bin_list,ROW,COLUMN,copy_binfile)
+                
+       # scrambles image
+        scramble(bin_list,ROW,COLUMN)
+        copy_file (bin_list,copy_binfile)
+        #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+        
+        #copy new 2D list onto output file
+        #for i in range(1):
+#           user(bin_list,ROW,COLUMN,copy_binfile)
+
+        #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+
         
     
 
@@ -92,41 +87,53 @@ Plan: The method will go through each individual row within the two boxes passed
 swapping that row for the row of the second box. 
 """
 def tile_swap(tile1,tile2,grid_pic,ROW,COLUMN):
+    #calculates row coordinates
     row_coord1=((tile1-1)/4)*ROW
-    if tile1>4:
-        column_coord1=(tile1-2)/4*COLUMN
-    else:
-        column_coord1=(tile1-1)*COLUMN
     row_coord2=((tile2-1)/4)*ROW
-    if tile2>4:
-        column_coord2=(tile2-2)/4*COLUMN
-    else:
-        column_coord2=(tile2-1)*COLUMN
-    #print row_coord1,column_coord1,row_coord2,column_coord2
+    #calculates column coordinates
+    column_coord1=column_eq(tile1,COLUMN)
+    column_coord2=column_eq(tile2,COLUMN)
     for i in range(0,ROW):
         for j in range(0,COLUMN):
-            #print i +row_coord1,j+row_coord1
             byte_row1=grid_pic[i+row_coord1][j+column_coord1]
             byte_row2=grid_pic[i+row_coord2][j+column_coord2]
             
             grid_pic[i+row_coord1][j+column_coord1]=byte_row2
             grid_pic[i+row_coord2][j+column_coord2]=byte_row1
+"""
 
+"""
+def column_eq(tile,COLUMN):
+    # tiles 13-16
+    if tile>=13 and tile<=16:
+        column_coord=(tile-13)*COLUMN
+    # tiles 9-12
+    if tile>=9 and tile<=12:
+        column_coord=(tile-9)*COLUMN
+    # tiles 5-8
+    if tile>=5 and tile<=8:
+        column_coord=(tile-5)*COLUMN
+    #tiles 1-4
+    if tile>=1 and tile<=4:
+        column_coord=(tile-1)*COLUMN
+    return column_coord
+"""
+
+"""
 def scramble(bin_list,ROW,COLUMN):
     for i in range(20):
         random1=random.randint(1,16)
         random2=random.randint(1,16)
-        print random1, random2
         tile_swap(random1,random2,bin_list,ROW,COLUMN)
-        
+"""
+
+"""
 def user(bin_list,ROW,COLUMN,copy_binfile):
     tile1= input("Please enter the first tile: ")
     tile2= input("Second tile: ")
     tile_swap(tile1,tile2,bin_list,ROW,COLUMN)
-    for row in bin_list:
-        for num in row:
-            copy_binfile.write(num)
-    os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+    copy_file (bin_list,copy_binfile)
+    #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
 
 """ 
 Description:
@@ -189,13 +196,9 @@ Return: NONE
 Plan: A duplicate file will be opened called "Copy.bmp", it will be opened to write on. Then each character from
 the original file will be copied into the duplicate file. 
 """ 
-def copy_file (bin_file): 
-    copy_bin=open("Copy.bmp","wb") 
-    bin_file.seek(0) 
-    for ch in bin_file: 
-        copy_bin.write(ch) 
-        bin_file.close() 
-        copy_bin.close() 
-    return copy_bin    
+def copy_file (bin_list,copy_binfile): 
+    for row in bin_list:
+        for num in row:
+            copy_binfile.write(num)   
 if __name__ == "__main__":
     main()
