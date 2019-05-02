@@ -8,7 +8,8 @@ This program will create a tile game using an inputted image
 """
 import os
 import random
-
+FILENAME="grid_pic1.bmp"
+COMMAND="powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_pic1.bmp"
 def main():
     draw_image()
 
@@ -41,7 +42,7 @@ def draw_image():
         bin_list.append(row)
             
     #create copy of orignial file to have grid lines made
-    with open("grid_picc.bmp","wb") as copy_binfile:
+    with open(FILENAME,"wb") as copy_binfile:
         copy_header(bin_file,copy_binfile)
 
         COLUMN=width/4
@@ -62,11 +63,12 @@ def draw_image():
        # scrambles image
         scramble(bin_list,ROW,COLUMN)
         copy_file (bin_list,copy_binfile)
-        #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+        os.system(COMMAND)
         
         #copy new 2D list onto output file
-        #for i in range(1):
-#           user(bin_list,ROW,COLUMN,copy_binfile)
+        for i in range(1):
+           copy_binfile=open(FILENAME,"wb") 
+           user(bin_list,ROW,COLUMN,copy_binfile)
 
         #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
 
@@ -133,7 +135,7 @@ def user(bin_list,ROW,COLUMN,copy_binfile):
     tile2= input("Second tile: ")
     tile_swap(tile1,tile2,bin_list,ROW,COLUMN)
     copy_file (bin_list,copy_binfile)
-    #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
+    os.system(COMMAND)
 
 """ 
 Description:
@@ -199,6 +201,7 @@ the original file will be copied into the duplicate file.
 def copy_file (bin_list,copy_binfile): 
     for row in bin_list:
         for num in row:
-            copy_binfile.write(num)   
+            copy_binfile.write(num)
+    copy_binfile.close()
 if __name__ == "__main__":
     main()
