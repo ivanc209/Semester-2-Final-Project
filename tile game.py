@@ -8,8 +8,9 @@ This program will create a tile game using an inputted image
 """
 import os
 import random
-FILENAME="grid_pic1.bmp"
-COMMAND="powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_pic1.bmp"
+import time
+FILENAME="grid_pic2.bmp"
+COMMAND="powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_pic2.bmp"
 def main():
     draw_image()
 
@@ -42,35 +43,38 @@ def draw_image():
         bin_list.append(row)
             
     #create copy of orignial file to have grid lines made
-    with open(FILENAME,"wb") as copy_binfile:
-        copy_header(bin_file,copy_binfile)
+    copy_binfile=open(FILENAME,"wb")
+    copy_header(bin_file,copy_binfile)
 
-        COLUMN=width/4
-        ROW=height/4
+    COLUMN=width/4
+    ROW=height/4
 
-        #create four columns 
-        for i in range(1,4):    
-            column_coord=COLUMN*i
-            for j in range(height-1):
-                bin_list[j][column_coord]=bytearray("000")
+    #create four columns 
+    for i in range(1,4):    
+        column_coord=COLUMN*i
+        for j in range(height-1):
+            bin_list[j][column_coord]=bytearray("000")
 
-        #create four rows 
-        for i in range(1,4):    
-            row_coord=ROW*i
-            for j in range(width-1):
-                bin_list[row_coord][j]=bytearray("000")
-                
-       # scrambles image
-        scramble(bin_list,ROW,COLUMN)
-        copy_file (bin_list,copy_binfile)
+    #create four rows 
+    for i in range(1,4):    
+        row_coord=ROW*i
+        for j in range(width-1):
+            bin_list[row_coord][j]=bytearray("000")
+            
+   # scrambles image
+    scramble(bin_list,ROW,COLUMN)
+    copy_file (bin_list,copy_binfile)
+    copy_binfile.close()
+    time.sleep(2)
+    os.system(COMMAND)
+    
+    #copy new 2D list onto output file
+    for i in range(1):
+        copy_binfile=open(FILENAME,"ab") 
+        user(bin_list,ROW,COLUMN,copy_binfile)
+        copy_binfile.close()
+        time.sleep(2)
         os.system(COMMAND)
-        
-        #copy new 2D list onto output file
-        for i in range(1):
-           copy_binfile=open(FILENAME,"wb") 
-           user(bin_list,ROW,COLUMN,copy_binfile)
-
-        #os.system("powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_picc.bmp")
 
         
     
@@ -135,7 +139,8 @@ def user(bin_list,ROW,COLUMN,copy_binfile):
     tile2= input("Second tile: ")
     tile_swap(tile1,tile2,bin_list,ROW,COLUMN)
     copy_file (bin_list,copy_binfile)
-    os.system(COMMAND)
+
+    
 
 """ 
 Description:
@@ -202,6 +207,5 @@ def copy_file (bin_list,copy_binfile):
     for row in bin_list:
         for num in row:
             copy_binfile.write(num)
-    copy_binfile.close()
 if __name__ == "__main__":
     main()
