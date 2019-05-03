@@ -9,8 +9,8 @@ This program will create a tile game using an inputted image
 import os
 import random
 import time
-FILENAME="grid_pic2.bmp"
-COMMAND="powershell -c H:\CS2\FP\Semester-2-Final-Project\grid_pic2.bmp"
+FILENAME="out"
+#COMMAND= "powershell -c H:\CS2\FP\Semester-2-Final-Project\"
 def main():
     draw_image()
 
@@ -66,15 +66,15 @@ def draw_image():
     copy_file (bin_list,copy_binfile)
     copy_binfile.close()
     time.sleep(2)
-    os.system(COMMAND)
+    #os.system(COMMAND)
     
     #copy new 2D list onto output file
-    for i in range(1):
-        copy_binfile=open(FILENAME,"ab") 
+    for i in range(2):
+        copy_binfile=open(FILENAME+str(i)+".bmp","wb") 
         user(bin_list,ROW,COLUMN,copy_binfile)
         copy_binfile.close()
         time.sleep(2)
-        os.system(COMMAND)
+#        os.system(FILENAME+str(i)+".bmp")
 
         
     
